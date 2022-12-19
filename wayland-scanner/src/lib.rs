@@ -64,7 +64,7 @@ pub fn generate_interfaces(stream: proc_macro::TokenStream) -> proc_macro::Token
         Err(e) => panic!("Failed to open protocol file {}: {}", path.display(), e),
     };
     let protocol = parse::parse(file);
-    interfaces::generate(&protocol, false).into()
+    interfaces::generate(&protocol).into()
 }
 
 /// Proc-macro for generating client-side API associated with an XML specification

@@ -10,17 +10,8 @@ use wayland_client::{
 
 use wayland_protocols::xdg::shell::client::{xdg_surface, xdg_toplevel, xdg_wm_base};
 
-struct GreenfieldBackend {
-
-}
-
-impl GreenfieldBackend {
-
-}
-
 fn main() {
     let conn = Connection::connect_to_env().unwrap();
-    Connection::from_backend(GreenfieldBackend);
 
     let mut event_queue = conn.new_event_queue();
     let qhandle = event_queue.handle();

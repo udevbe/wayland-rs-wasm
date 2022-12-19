@@ -4,52 +4,26 @@ use crate::protocol::{Interface, Message, Protocol, Type};
 
 use quote::{format_ident, quote};
 
-pub fn generate(protocol: &Protocol, with_c_interfaces: bool) -> TokenStream {
+pub fn generate(protocol: &Protocol) -> TokenStream {
     let interfaces =
-        protocol.interfaces.iter().map(|iface| generate_interface(iface, with_c_interfaces));
-    if with_c_interfaces {
-        let prefix = super::c_interfaces::generate_interfaces_prefix(protocol);
-        quote! {
-            #prefix
-            #(#interfaces)*
-        }
-    } else {
+        protocol.interfaces.iter().map(|iface| generate_interface(iface));
         interfaces.collect()
-    }
 }
 
-pub(crate) fn generate_interface(interface: &Interface, with_c: bool) -> TokenStream {
+pub(crate) fn generate_interface(interface: &Interface) -> TokenStream {
     let const_name = format_ident!("{}_INTERFACE", interface.name.to_ascii_uppercase());
     let iface_name = &interface.name;
     let iface_version = interface.version;
     let requests = build_messagedesc_list(&interface.requests);
     let events = build_messagedesc_list(&interface.events);
 
-    let c_name = format_ident!("{}_interface", interface.name);
-
-    if with_c {
-        let c_iface = super::c_interfaces::generate_interface(interface);
-        quote! {
-            pub static #const_name: wayland_backend::protocol::Interface = wayland_backend::protocol::Interface {
-                name: #iface_name,
-                version: #iface_version,
-                requests: #requests,
-                events: #events,
-                c_ptr: Some(unsafe { & #c_name }),
-            };
-
-            #c_iface
-        }
-    } else {
-        quote! {
-            pub static #const_name: wayland_backend::protocol::Interface = wayland_backend::protocol::Interface {
-                name: #iface_name,
-                version: #iface_version,
-                requests: #requests,
-                events: #events,
-                c_ptr: None,
-            };
-        }
+    quote! {
+        pub static #const_name: wayland_backend::protocol::Interface = wayland_backend::protocol::Interface {
+            name: #iface_name,
+            version: #iface_version,
+            requests: #requests,
+            events: #events,
+        };
     }
 }
 
@@ -126,7 +100,7 @@ mod tests {
         let protocol_file =
             std::fs::File::open("./tests/scanner_assets/test-protocol.xml").unwrap();
         let protocol_parsed = crate::parse::parse(protocol_file);
-        let generated: String = super::generate(&protocol_parsed, true).to_string();
+        let generated: String = super::generate(&protocol_parsed).to_string();
         let generated = crate::format_rust_code(&generated);
 
         let reference =
