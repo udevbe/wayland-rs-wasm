@@ -89,14 +89,14 @@ impl Connection {
             UnixStream::connect(socket_path).map_err(|_| ConnectError::NoCompositor)?
         };
 
-        let backend = Backend::connect(stream).map_err(|_| ConnectError::NoWaylandLib)?;
+        let backend = Backend::connect(stream);
         Ok(Self { backend })
     }
 
     /// Initialize a Wayland connection from an already existing Unix stream
-    pub fn from_socket(stream: UnixStream) -> Result<Self, ConnectError> {
-        let backend = Backend::connect(stream).map_err(|_| ConnectError::NoWaylandLib)?;
-        Ok(Self { backend })
+    pub fn from_socket(stream: UnixStream) -> Self {
+        let backend = Backend::connect(stream);
+        Self { backend }
     }
 
     /// Get the `WlDisplay` associated with this connection

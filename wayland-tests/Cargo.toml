@@ -10,13 +10,8 @@ autotests = false
 [dev-dependencies]
 wayland-backend = { path = "../wayland-backend" }
 wayland-client = { path = "../wayland-client" }
-wayland-server = { path = "../wayland-server" }
-wayland-protocols = { path = "../wayland-protocols", features = ["client", "server"] }
+wayland-protocols = { path = "../wayland-protocols", features = ["client"] }
 tempfile = "3"
-
-[features]
-server_system = ["wayland-backend/server_system"]
-client_system = ["wayland-backend/client_system"]
 
 [[test]]
 name = "attach_to_surface"

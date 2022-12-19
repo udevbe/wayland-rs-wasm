@@ -13,7 +13,6 @@ readme = "README.md"
 build = "build.rs"
 
 [dependencies]
-wayland-sys = { version = "0.30.0", path = "../wayland-sys", features = [] }
 log = { version = "0.4", optional = true }
 scoped-tls = "1.0"
 downcast-rs = "1.2"
@@ -45,14 +44,8 @@ cc = "1.0"
 
 [dev-dependencies]
 wayland-scanner = { path = "../wayland-scanner"}
-wayland-sys = { path = "../wayland-sys", features = ["client", "server"] }
 concat-idents = "1.1"
 env_logger = "0.9"
-
-[features]
-client_system = ["wayland-sys/client"]
-server_system = ["wayland-sys/server"]
-dlopen = ["wayland-sys/dlopen"]
 
 [package.metadata.docs.rs]
 all-features = true

@@ -50,7 +50,4 @@
 #[macro_use]
 mod protocol_macro;
 
-pub mod ext;
-pub mod wp;
 pub mod xdg;
-pub mod xwayland;

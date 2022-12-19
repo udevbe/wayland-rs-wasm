@@ -1,16 +1,3 @@
-/// An error type representing the failure to load libwayland
-#[derive(Debug)]
-pub struct NoWaylandLib;
-
-impl std::error::Error for NoWaylandLib {}
-
-impl std::fmt::Display for NoWaylandLib {
-    #[cfg_attr(coverage, no_coverage)]
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> Result<(), ::std::fmt::Error> {
-        f.write_str("could not load libwayland-client.so")
-    }
-}
-
 /// An error that can occur when using a Wayland connection
 #[derive(Debug)]
 pub enum WaylandError {

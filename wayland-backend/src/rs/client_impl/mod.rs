@@ -27,7 +27,7 @@ use super::{
     wire::MessageParseError,
 };
 
-pub use crate::types::client::{InvalidId, NoWaylandLib, WaylandError};
+pub use crate::types::client::{InvalidId, WaylandError};
 
 #[derive(Debug, Clone)]
 struct Data {
@@ -143,7 +143,7 @@ impl InnerBackend {
         WeakInnerBackend { state: Arc::downgrade(&self.state) }
     }
 
-    pub fn connect(stream: UnixStream) -> Result<Self, NoWaylandLib> {
+    pub fn connect(stream: UnixStream) -> Self {
         let socket = BufferedSocket::new(Socket::from(stream));
         let mut map = ObjectMap::new();
         map.insert_at(
@@ -164,7 +164,7 @@ impl InnerBackend {
         let debug =
             matches!(std::env::var_os("WAYLAND_DEBUG"), Some(str) if str == "1" || str == "client");
 
-        Ok(Self {
+        Self {
             state: Arc::new(ConnectionState {
                 protocol: Mutex::new(ProtocolState {
                     socket,
@@ -179,7 +179,7 @@ impl InnerBackend {
                     read_serial: 0,
                 }),
             }),
-        })
+        }
     }
 
     /// Flush all pending outgoing requests to the server

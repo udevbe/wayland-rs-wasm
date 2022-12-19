@@ -2,8 +2,6 @@
 
 use std::{ffi::CString, os::unix::prelude::AsRawFd};
 
-pub use wayland_sys::common::{wl_argument, wl_interface, wl_message};
-
 /// Describes whether an argument may have a null value.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum AllowNull {
@@ -146,8 +144,6 @@ pub struct Interface {
     pub requests: &'static [MessageDesc],
     /// A list that describes every event this interface supports.
     pub events: &'static [MessageDesc],
-    /// A C representation of this interface that may be used to interoperate with libwayland.
-    pub c_ptr: Option<&'static wayland_sys::common::wl_interface>,
 }
 
 impl std::fmt::Display for Interface {
@@ -178,7 +174,7 @@ pub struct MessageDesc {
 
 /// Special interface representing an anonymous object
 pub static ANONYMOUS_INTERFACE: Interface =
-    Interface { name: "<anonymous>", version: 0, requests: &[], events: &[], c_ptr: None };
+    Interface { name: "<anonymous>", version: 0, requests: &[], events: &[] };
 
 /// Description of the protocol-level information of an object
 #[derive(Copy, Clone, Debug)]

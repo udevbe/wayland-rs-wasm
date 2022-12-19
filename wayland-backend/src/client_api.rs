@@ -11,7 +11,7 @@ use crate::protocol::{Interface, Message, ObjectInfo};
 
 use super::client_impl;
 
-pub use crate::types::client::{InvalidId, NoWaylandLib, WaylandError};
+pub use crate::types::client::{InvalidId, WaylandError};
 
 /// A trait representing your data associated to an object
 ///
@@ -161,8 +161,10 @@ impl Backend {
     ///
     /// This method can only fail on the `sys` backend if the `dlopen` cargo feature was enabled
     /// and the system wayland library could not be found.
-    pub fn connect(stream: UnixStream) -> Result<Self, NoWaylandLib> {
-        client_impl::InnerBackend::connect(stream).map(|backend| Self { backend })
+    pub fn connect(stream: UnixStream) -> Self {
+        Self {
+            backend: client_impl::InnerBackend::connect(stream)
+        }
     }
 
     /// Get a [`WeakBackend`] from this backend

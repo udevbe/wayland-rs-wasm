@@ -196,7 +196,7 @@ pub mod globals;
 /// Backend reexports
 pub mod backend {
     pub use wayland_backend::client::{
-        Backend, InvalidId, NoWaylandLib, ObjectData, ObjectId, ReadEventsGuard, WaylandError,
+        Backend, InvalidId, ObjectData, ObjectId, ReadEventsGuard, WaylandError,
         WeakBackend,
     };
     pub use wayland_backend::io_lifetimes;
