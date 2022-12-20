@@ -40,7 +40,6 @@ use std::{ffi::OsString, path::PathBuf};
 
 use syn::{parse_macro_input, LitStr};
 
-mod c_interfaces;
 mod client_gen;
 mod common;
 mod interfaces;
